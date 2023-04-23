@@ -1,0 +1,63 @@
+from aiogram import types
+
+# ______________________________________INLINE_KEYBOARDS________________________________________
+k_cancel = types.InlineKeyboardMarkup()
+b_cancel = types.InlineKeyboardButton(text='❌ Отмена', callback_data='/cancel')
+k_cancel.add(b_cancel)
+
+k_help_friendly = types.InlineKeyboardMarkup()
+b_start_friendly = types.InlineKeyboardButton(text='🏠 Home', callback_data='/start_friendly')
+k_help_friendly.add(b_start_friendly)
+
+k_functions = types.InlineKeyboardMarkup()
+b_weather = types.InlineKeyboardButton(text='🌦 Weather', callback_data='/fun_weather')
+b_exchange = types.InlineKeyboardButton(text='💰 Exchange', callback_data='/fun_exchange')
+b_animal = types.InlineKeyboardButton(text='🐱 Cute animal', callback_data='/fun_animal')
+b_polls = types.InlineKeyboardButton(text='📝 Polls', callback_data='/fun_polls')
+k_functions.add(b_weather, b_exchange)
+k_functions.add(b_animal, b_polls)
+
+k_start_friendly = types.InlineKeyboardMarkup()
+b1 = types.InlineKeyboardButton(text='🔑 Получить файл-доступ', callback_data='/get_config')
+b2 = types.InlineKeyboardButton(text='🤝 Пригласить друга', callback_data='/get_link')
+b3_man = types.InlineKeyboardButton(text='📖 Инструкция', callback_data='/instruction')
+b4_beer = types.InlineKeyboardButton(text='🍺 На пиво!', callback_data='/beer')
+k_start_friendly.add(b1, b2)
+k_start_friendly.add(b3_man, b4_beer)
+
+k_only_man = types.InlineKeyboardMarkup()
+k_only_man.add(b3_man)
+
+k_start_admin = types.InlineKeyboardMarkup()
+b4 = types.InlineKeyboardButton(text='👑 Управление🔐', callback_data='/manage')
+b5 = types.InlineKeyboardButton(text='❔ question🔐', callback_data='/question')
+b6 = types.InlineKeyboardButton(text='❕ answer🔐', callback_data='/answer')
+k_start_admin.add(b1, b2)
+k_start_admin.add(b3_man)
+k_start_admin.add(b4)
+k_start_admin.add(b5, b6)
+
+k_manage_user = types.InlineKeyboardMarkup()
+b1 = types.InlineKeyboardButton(text='〽️ Изменить rang🔐', callback_data='/change_rang')
+b2 = types.InlineKeyboardButton(text='🚷 Деактивировать🔐', callback_data='/deactivate')
+k_manage_user.add(b1, b2)
+k_manage_user.add(b_cancel)
+
+k_manage_user_unban = types.InlineKeyboardMarkup()
+b3 = types.InlineKeyboardButton(text='♻️ Разбанить🔐', callback_data='/unban')
+k_manage_user_unban.add(b1, b2)
+k_manage_user_unban.add(b3)
+
+k_choice_device = types.InlineKeyboardMarkup()
+b1 = types.InlineKeyboardButton(text='🍏 Apple', callback_data='/help_apple')
+b2 = types.InlineKeyboardButton(text='🤖 Android', callback_data='/help_android')
+k_choice_device.add(b1, b2)
+k_choice_device.add(b_cancel)
+
+# ______________________________________KEYBOARDS________________________________________
+k_contact = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+b1 = types.KeyboardButton(text='✅ Да, предоставить телефон', request_contact=True)
+b2 = types.KeyboardButton(text='❌ Нет, у меня параноя')
+k_contact.add(b1)
+k_contact.add(b2)
+# _______________________________________________________________________________________

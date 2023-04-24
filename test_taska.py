@@ -22,13 +22,15 @@ from base_manager import Bm, Column, log_time
 from try_manager import User_try_aiogram as Uta
 from aiogram import Bot, Dispatcher, types
 import time
-from config import TOKEN, CAT, HOME_CAT, LIST_ADMIN, CHANEL_ID, CHANEL_CHAT_ID
+from config import TOKEN, TOKEN_WEATHER, CAT, HOME_CAT, LIST_ADMIN, CHANEL_ID, CHANEL_CHAT_ID
 import sqlite3
 import subprocess
 from io import BytesIO
 import random
 import asyncio
 import keyboard
+import json
+from urllib.request import urlopen
 # from handlers import bot
 
 bot =   Bot(token=TOKEN, parse_mode=types.ParseMode.HTML)
@@ -198,22 +200,56 @@ class User(Bm, Uta):
 
     async def fun_weather(self, call):
         await self.try_call_answer(obj=call, text="🌦", show_alert=False)
-        city_name = await self.try_answer(call.message, f"Okay {self.first_name}, send me your city name (Eng).\nFor example: Yekaterinburg")
+        city_name = await self.try_answer(call.message, f"Okay {self.first_name}, send me your geolocation or city name (Eng).\nFor example: Yekaterinburg", reply_markup=keyboard.k_location)
         self.route.update(obj=city_name, process='/city_name')
         self.post()
 
+
+
+    async def weather_location(self, message):
+        lat = message.location.latitude
+        lon = message.location.longitude
+        text = self.weather_answer(lat, lon)
+        await self.try_answer(message, text=text)
+
+    def weather_answer(self, lat, lon):
+        icon = {'01d':'☀️', '01n':'🌙', '02d':'🌤', '02n':'🌤', '03d':'🌥', '03n':'🌥', '04d':'☁️', '04n':'☁️', '09d':'🌧', '09n':'🌧', '10d':'🌦', '10n':'🌦', '11d':'⛈', '11n':'⛈', '13d':'❄️', '13n':'❄️', '50n':'🌫', '50d':'🌫'}
+        country = {'RU':'🇷🇺'}
+        WEATHER_CALL = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={TOKEN_WEATHER}&units=metric"
+        data = urlopen(WEATHER_CALL).read()
+        d = json.loads(data)
+        answer = f"{country[d['sys']['country']]} {d['name']}\n"
+        answer+= f"{icon[d['weather'][0]['icon']]} {d['main']['temp']}°C feels like {d['main']['feels_like']}°C"
+        return answer
+
     async def weather_of_city(self, message):
         city_name = message.text
-        file=open((f"{CAT}city_list.json"),'r', encoding='utf-8')
-        dict_city=eval(file.read())
-        file.close()
+        f = open('city_list.json', "r", encoding='utf-8')
+  
+        # Reading from file
+        dict_city = eval(f.read())
+
+        # f = open('city_list.json', "r")
+        # dict_city = eval(f)
+        f.close()
         list_city= []
         for x in dict_city:
             list_city.append(x["name"])
         list_result=[]
         for x in list_city:
             if city_name.lower() in x.lower(): list_result.append(x)
-        await self.try_answer(message, f"This is your country? \n{list_result[0]}")
+        
+        list_buttons=[]
+        k_cities = types.InlineKeyboardMarkup()
+        # b = types.InlineKeyboardButton(text='❌ Отмена', callback_data='/cancel')
+
+        for x in list_result:
+            list_buttons.append(types.InlineKeyboardButton(text=x, callback_data='/city_id_'+'')) #here
+            pass
+
+        k_cities.add(b_cancel)
+
+        await self.try_answer(message, f"Choice your city:")
         
             
         

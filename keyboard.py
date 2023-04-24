@@ -60,4 +60,8 @@ b1 = types.KeyboardButton(text='✅ Да, предоставить телефо�
 b2 = types.KeyboardButton(text='❌ Нет, у меня параноя')
 k_contact.add(b1)
 k_contact.add(b2)
+
+k_location = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+b1 = types.KeyboardButton(text='📍 Отправить локацию телефона', request_location=True)
+k_location.add(b1)
 # _______________________________________________________________________________________

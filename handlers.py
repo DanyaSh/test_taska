@@ -57,12 +57,20 @@ async def instruction(call: types.CallbackQuery):
 @dp.callback_query_handler(lambda call: call.data=='/fun_animal')
 async def instruction(call: types.CallbackQuery):
     user=User(call)
-    pass
+    await call.message.answer(text='@gif cute animal')
 
 @dp.callback_query_handler(lambda call: call.data=='/fun_polls')
 async def instruction(call: types.CallbackQuery):
     user=User(call)
     pass
+
+# __________________________________LOCATION____________________________________
+
+@dp.message_handler(content_types='location')
+async def telephone(message: types.Message):
+    user=User(message)
+    await user.weather_location(message)
+
 
 # '/fun_weather'
 # '/fun_exchange'

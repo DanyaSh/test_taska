@@ -1,5 +1,5 @@
 from test_taska import User
-from config import CHANEL_ID, TOKEN
+from config import TOKEN, GROUP_ID
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
 import keyboard
@@ -32,9 +32,10 @@ async def echo(message: types.Message):
         await user.pairs_text(message)
     elif user.route.process=='/convert':
         await user.exchange_input(message)
+    elif message.text=="❌ Cancel":
+        await user.cancel(message)
     else:
         await message.reply(f"Моя твоя не понимать...🧐\n{message.text}")
-
 
 # __________________________________INLINE BUTTONS____________________________________
 
@@ -64,10 +65,11 @@ async def instruction(call: types.CallbackQuery):
     user=User(call)
     await call.message.answer(text='@gif cute animal')
 
-@dp.callback_query_handler(lambda call: call.data=='/fun_polls')
+@dp.callback_query_handler(lambda call: call.data=='/fun_poll')
 async def instruction(call: types.CallbackQuery):
     user=User(call)
-    pass
+    await user.try_call_answer(obj=call, text="📝", show_alert=False)
+    await user.create_poll(call.message)
 
 @dp.callback_query_handler(lambda call: call.data[:9]=='/city_id_')
 async def callback_inline(call):
@@ -86,8 +88,18 @@ async def telephone(message: types.Message):
     user=User(message)
     await user.weather_location(message)
 
-
-# '/fun_weather'
-# '/fun_exchange'
-# '/fun_animal'
-# '/fun_polls'
+# __________________________________POOL____________________________________
+@dp.message_handler(content_types=["poll"])
+async def telephone(message: types.Message):
+    p=message.poll
+    await bot.send_poll(chat_id=GROUP_ID, 
+                        question=p.question, 
+                        options=[x.text for x in p.options], 
+                        is_anonymous=p.is_anonymous, 
+                        type=p.type, 
+                        allows_multiple_answers=p.allows_multiple_answers, 
+                        correct_option_id=p.correct_option_id, 
+                        explanation=p.explanation, 
+                        explanation_entities=p.explanation_entities, 
+                        open_period=p.open_period, 
+                        close_date=p.close_date)

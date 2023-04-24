@@ -2,18 +2,18 @@ from aiogram import types
 
 # ______________________________________INLINE_KEYBOARDS________________________________________
 k_cancel = types.InlineKeyboardMarkup()
-b_cancel = types.InlineKeyboardButton(text='❌ Отмена', callback_data='/cancel')
+b_cancel = types.InlineKeyboardButton(text='❌ Cancel', callback_data='/cancel')
 k_cancel.add(b_cancel)
 
 k_help_friendly = types.InlineKeyboardMarkup()
-b_start_friendly = types.InlineKeyboardButton(text='🏠 Home', callback_data='/start_friendly')
+b_start_friendly = types.InlineKeyboardButton(text='🏠 Home', callback_data='/start')
 k_help_friendly.add(b_start_friendly)
 
 k_functions = types.InlineKeyboardMarkup()
 b_weather = types.InlineKeyboardButton(text='🌦 Weather', callback_data='/fun_weather')
 b_exchange = types.InlineKeyboardButton(text='🏧 Exchange', callback_data='/fun_exchange')
 b_animal = types.InlineKeyboardButton(text='🐱 Cute animal', callback_data='/fun_animal')
-b_polls = types.InlineKeyboardButton(text='📝 Polls', callback_data='/fun_polls')
+b_polls = types.InlineKeyboardButton(text='📝 Poll', callback_data='/fun_poll')
 k_functions.add(b_weather, b_exchange)
 k_functions.add(b_animal, b_polls)
 
@@ -68,13 +68,12 @@ k_choice_device.add(b1, b2)
 k_choice_device.add(b_cancel)
 
 # ______________________________________KEYBOARDS________________________________________
-k_contact = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-b1 = types.KeyboardButton(text='✅ Да, предоставить телефон', request_contact=True)
-b2 = types.KeyboardButton(text='❌ Нет, у меня параноя')
-k_contact.add(b1)
-k_contact.add(b2)
-
 k_location = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 b1 = types.KeyboardButton(text='📍 Отправить локацию телефона', request_location=True)
 k_location.add(b1)
+
+k_poll = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+b_create_poll = types.KeyboardButton(text="✅Create poll", request_poll=types.KeyboardButtonPollType(type=types.PollType.REGULAR))
+b_cancel_poll = types.KeyboardButton(text="❌ Cancel")
+k_poll.add(b_cancel_poll, b_create_poll)
 # _______________________________________________________________________________________

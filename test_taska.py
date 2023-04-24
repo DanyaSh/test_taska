@@ -22,7 +22,7 @@ from base_manager import Bm, Column, log_time
 from try_manager import User_try_aiogram as Uta
 from aiogram import Bot, Dispatcher, types
 import time
-from config import TOKEN, TOKEN_WEATHER, TOKEN_EXCHANGE, CAT, HOME_CAT, LIST_ADMIN, CHANEL_ID, CHANEL_CHAT_ID
+from config import TOKEN, TOKEN_WEATHER, TOKEN_EXCHANGE, CAT, GROUP_ID, LINK_WELCOME
 import sqlite3
 import subprocess
 from io import BytesIO
@@ -198,6 +198,13 @@ class User(Bm, Uta):
     async def starts(self, message):
         await self.try_answer(message, f"👋 Hi {self.first_name}!!! \nWhat do you want❓", reply_markup=keyboard.k_functions)
 
+    async def cancel(self, obj):
+        self.route.update(obj)
+        self.post()
+        await self.try_call_answer(obj=obj, text="💤", show_alert=False)
+        await self.try_answer(obj=obj, text='💤 Действие отменено', reply_markup=keyboard.k_help_friendly)
+        await self.try_delete_message(obj=obj)
+
 # __________________________weather____________________________
     async def fun_weather(self, call):
         await self.try_call_answer(obj=call, text="🌦", show_alert=False)
@@ -295,3 +302,6 @@ class User(Bm, Uta):
         answer_exchange = await self.try_answer(message, f"Now {value} {first_pair} = {value*rates} {second_pair}.", reply_markup=keyboard.k_answer_exchange)
         self.route.update(obj=answer_exchange, process='/answer_exchange')
         self.post()
+    
+    async def create_poll(self, message):
+        await self.try_answer(message, text=f"Push the button to create poll.\nThis poll will be posted in [our private chat]({LINK_WELCOME}).", parse_mode='Markdown', reply_markup=keyboard.k_poll)

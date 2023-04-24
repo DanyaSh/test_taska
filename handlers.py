@@ -28,16 +28,21 @@ async def echo(message: types.Message):
     user=User(message)
     if user.route.process=='/city_name':
         await user.weather_of_city(message)
+    elif user.route.process=='/pairs':
+        await user.pairs_text(message)
+    elif user.route.process=='/convert':
+        await user.exchange_input(message)
     else:
         await message.reply(f"Моя твоя не понимать...🧐\n{message.text}")
 
 
 # __________________________________INLINE BUTTONS____________________________________
 
-@dp.callback_query_handler(text='/start')
-async def start_friendly(call: types.CallbackQuery):
+@dp.callback_query_handler(lambda call: call.data=='/start')
+async def instruction(call: types.CallbackQuery):
     user=User(call)
-    user.start(call.message)
+    await user.try_call_answer(obj=call, text="🏠", show_alert=False)
+    await user.starts(call.message)
 
 @dp.callback_query_handler(lambda call: call.data=='/help')
 async def instruction(call: types.CallbackQuery):
@@ -49,10 +54,10 @@ async def instruction(call: types.CallbackQuery):
     user=User(call)
     await user.fun_weather(call)
 
-@dp.callback_query_handler(lambda call: call.data=='/fun_exchange')
+@dp.callback_query_handler(lambda call: call.data=='/fun_exchange' or call.data=='/change_pair')
 async def instruction(call: types.CallbackQuery):
     user=User(call)
-    pass
+    await user.fun_exchange(call)
 
 @dp.callback_query_handler(lambda call: call.data=='/fun_animal')
 async def instruction(call: types.CallbackQuery):
@@ -64,8 +69,18 @@ async def instruction(call: types.CallbackQuery):
     user=User(call)
     pass
 
-# __________________________________LOCATION____________________________________
+@dp.callback_query_handler(lambda call: call.data[:9]=='/city_id_')
+async def callback_inline(call):
+    user=User(call.from_user.id)
+    await user.try_call_answer(obj=call, text="⏳", show_alert=False)
+    await user.weather_city_id(call)
 
+@dp.callback_query_handler(lambda call: call.data in ['/usd_rub', '/rub_usd', '/eur_rub', '/rub_eur'])
+async def callback_inline(call):
+    user=User(call.from_user.id)
+    await user.pre_exchange_input(call)
+
+# __________________________________LOCATION____________________________________
 @dp.message_handler(content_types='location')
 async def telephone(message: types.Message):
     user=User(message)

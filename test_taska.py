@@ -22,7 +22,7 @@ from base_manager import Bm, Column, log_time
 from try_manager import User_try_aiogram as Uta
 from aiogram import Bot, Dispatcher, types
 import time
-from config import TOKEN, TOKEN_WEATHER, CAT, HOME_CAT, LIST_ADMIN, CHANEL_ID, CHANEL_CHAT_ID
+from config import TOKEN, TOKEN_WEATHER, TOKEN_EXCHANGE, CAT, HOME_CAT, LIST_ADMIN, CHANEL_ID, CHANEL_CHAT_ID
 import sqlite3
 import subprocess
 from io import BytesIO
@@ -165,17 +165,18 @@ class User(Bm, Uta):
         self.__time__last_active=int(time.time())
         _c1 = Column(table=self._table, name='id', type='integer', primary_key=True, meaning=self.id)
         _c2 = Column(table=self._table, name='contact')
-        _c3 = Column(table=self._table, name='_rang', type='integer', meaning=5)
-        _c4 = Column(table=self._table, name='_file1', type='BLOB NOT NULL')
-        _c5 = Column(table=self._table, name='_file2', type='BLOB NOT NULL')
-        _c6 = Column(table=self._table, name='_file3', type='BLOB NOT NULL')
-        _c7 = Column(table=self._table, name='first_name', meaning=self.first_name)
-        _c8 = Column(table=self._table, name='last_name', meaning=self.last_name)
-        _c9 = Column(table=self._table, name='date_start', type='integer', meaning=self.date_start)
-        _c10 = Column(table=self._table, name='_time_last_active', type='integer', meaning=self.__time__last_active)
-        _c11 = Column(table=self._table, name='_list_friend', type='text', meaning='[]')
-        _c12 = Column(table=self._table, name='source_friend', type='integer', meaning=0)
-        self._list_columns=[_c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10, _c11, _c12]
+        _c3 = Column(table=self._table, name='base_pair', type='text', meaning='USD-RUB')
+        _c4 = Column(table=self._table, name='_rang', type='integer', meaning=5)
+        _c5 = Column(table=self._table, name='_file1', type='BLOB NOT NULL')
+        _c6 = Column(table=self._table, name='_file2', type='BLOB NOT NULL')
+        _c7 = Column(table=self._table, name='_file3', type='BLOB NOT NULL')
+        _c8 = Column(table=self._table, name='first_name', meaning=self.first_name)
+        _c9 = Column(table=self._table, name='last_name', meaning=self.last_name)
+        _c10 = Column(table=self._table, name='date_start', type='integer', meaning=self.date_start)
+        _c11 = Column(table=self._table, name='_time_last_active', type='integer', meaning=self.__time__last_active)
+        _c12 = Column(table=self._table, name='_list_friend', type='text', meaning='[]')
+        _c13 = Column(table=self._table, name='source_friend', type='integer', meaning=0)
+        self._list_columns=[_c1, _c2, _c3, _c4, _c5, _c6, _c7, _c8, _c9, _c10, _c11, _c12, _c13]
         super().__init__(obj)
         if self.first_name and self.last_name == 'none':
             if isinstance(obj, types.CallbackQuery):
@@ -194,17 +195,15 @@ class User(Bm, Uta):
         self.route.post()
         self.links.post()
 # ________________________________________OPERATION__________________________________________
-
     async def starts(self, message):
         await self.try_answer(message, f"👋 Hi {self.first_name}!!! \nWhat do you want❓", reply_markup=keyboard.k_functions)
 
+# __________________________weather____________________________
     async def fun_weather(self, call):
         await self.try_call_answer(obj=call, text="🌦", show_alert=False)
         city_name = await self.try_answer(call.message, f"Okay {self.first_name}, send me your geolocation or city name (Eng).\nFor example: Yekaterinburg", reply_markup=keyboard.k_location)
         self.route.update(obj=city_name, process='/city_name')
         self.post()
-
-
 
     async def weather_location(self, message):
         lat = message.location.latitude
@@ -214,9 +213,9 @@ class User(Bm, Uta):
 
     def weather_answer(self, lat, lon):
         icon = {'01d':'☀️', '01n':'🌙', '02d':'🌤', '02n':'🌤', '03d':'🌥', '03n':'🌥', '04d':'☁️', '04n':'☁️', '09d':'🌧', '09n':'🌧', '10d':'🌦', '10n':'🌦', '11d':'⛈', '11n':'⛈', '13d':'❄️', '13n':'❄️', '50n':'🌫', '50d':'🌫'}
-        country = {'RU':'🇷🇺'}
-        WEATHER_CALL = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={TOKEN_WEATHER}&units=metric"
-        data = urlopen(WEATHER_CALL).read()
+        country = {'RU':'🇷🇺', 'US':'🇺🇸'}
+        weather_call = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={TOKEN_WEATHER}&units=metric"
+        data = urlopen(weather_call).read()
         d = json.loads(data)
         answer = f"{country[d['sys']['country']]} {d['name']}\n"
         answer+= f"{icon[d['weather'][0]['icon']]} {d['main']['temp']}°C feels like {d['main']['feels_like']}°C"
@@ -225,31 +224,74 @@ class User(Bm, Uta):
     async def weather_of_city(self, message):
         city_name = message.text
         f = open('city_list.json', "r", encoding='utf-8')
-  
-        # Reading from file
-        dict_city = eval(f.read())
-
-        # f = open('city_list.json', "r")
-        # dict_city = eval(f)
+        dict_data = eval(f.read())
         f.close()
-        list_city= []
-        for x in dict_city:
-            list_city.append(x["name"])
+        dict_city= {}
+        for x in dict_data:
+            dict_city[x["name"]]=x['id']
         list_result=[]
-        for x in list_city:
+        for x in dict_city.keys():
             if city_name.lower() in x.lower(): list_result.append(x)
-        
-        list_buttons=[]
         k_cities = types.InlineKeyboardMarkup()
-        # b = types.InlineKeyboardButton(text='❌ Отмена', callback_data='/cancel')
-
         for x in list_result:
-            list_buttons.append(types.InlineKeyboardButton(text=x, callback_data='/city_id_'+'')) #here
-            pass
+            k_cities.add(types.InlineKeyboardButton(text=x, callback_data='/city_id_'+str(dict_city[x])))
+        city_id = await self.try_answer(message, f"Choice your city:", reply_markup=k_cities)
+        self.route.update(obj=city_id, process='/city_id')
+        self.post()
+    
+    async def weather_city_id(self, call):
+        city_id = call.data[9:]
+        text = self.weather_city_id_answer(city_id)
+        await self.try_answer(call, text=text)
+    
+    def weather_city_id_answer(self, city_id):
+        icon = {'01d':'☀️', '01n':'🌙', '02d':'🌤', '02n':'🌤', '03d':'🌥', '03n':'🌥', '04d':'☁️', '04n':'☁️', '09d':'🌧', '09n':'🌧', '10d':'🌦', '10n':'🌦', '11d':'⛈', '11n':'⛈', '13d':'❄️', '13n':'❄️', '50n':'🌫', '50d':'🌫'}
+        country = {'RU':'🇷🇺', 'US':'🇺🇸'}
+        weather_call = f"https://api.openweathermap.org/data/2.5/weather?id={city_id}&appid={TOKEN_WEATHER}&units=metric"
+        data = urlopen(weather_call).read()
+        d = json.loads(data)
+        answer = f"{country[d['sys']['country']]} {d['name']}\n"
+        answer+= f"{icon[d['weather'][0]['icon']]} {d['main']['temp']}°C feels like {d['main']['feels_like']}°C"
+        return answer
+    
+# __________________________exchange____________________________
+    async def fun_exchange(self, call):
+        await self.try_call_answer(obj=call, text="🏧", show_alert=False)
+        pairs = await self.try_answer(call.message, f"Okay {self.first_name}, send me your base convertation pair or push the button.\nFor example: USD-PLN", reply_markup=keyboard.k_exchange)
+        self.route.update(obj=pairs, process='/pairs')
+        self.post()
 
-        k_cities.add(b_cancel)
+    async def pairs_text(self, message):
+        first_pair=(message.text[:3]).upper()
+        second_pair=(message.text[4:]).upper()
+        exchange_call = f"https://v6.exchangerate-api.com/v6/{TOKEN_EXCHANGE}/latest/{first_pair}"
+        data = urlopen(exchange_call).read()
+        d = json.loads(data)        
+        rates = d['conversion_rates'][second_pair]
+        convert = await self.try_answer(message, f"Okay {self.first_name}, send me your value in {first_pair} for convertation to {second_pair}.")
+        self.base_pair = message.text.upper()
+        self.route.update(obj=convert, process='/convert')
+        self.post()
 
-        await self.try_answer(message, f"Choice your city:")
-        
-            
-        
+    async def pre_exchange_input(self, call):
+        await self.try_call_answer(obj=call, text="🏧", show_alert=False)
+        first_pair=(call.data[1:4]).upper()
+        second_pair=(call.data[5:]).upper()
+        convert = await self.try_answer(call, f"Okay {self.first_name}, send me your value in {first_pair} for convertation to {second_pair}.")
+        self.base_pair = call.data[1:].upper()
+        self.route.update(obj=convert, process='/convert')
+        self.post()
+        await self.exchange_input(call.data)
+    
+    async def exchange_input(self, message):
+        first_pair=self.base_pair[:3]
+        second_pair=self.base_pair[4:]
+        value= float(''.join(message.text.split(" ")))
+        exchange_call = f"https://v6.exchangerate-api.com/v6/{TOKEN_EXCHANGE}/latest/{first_pair}"
+        data = urlopen(exchange_call).read()
+        d = json.loads(data)        
+        rates = d['conversion_rates'][second_pair]
+
+        answer_exchange = await self.try_answer(message, f"Now {value} {first_pair} = {value*rates} {second_pair}.", reply_markup=keyboard.k_answer_exchange)
+        self.route.update(obj=answer_exchange, process='/answer_exchange')
+        self.post()

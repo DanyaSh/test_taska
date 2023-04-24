@@ -305,3 +305,14 @@ class User(Bm, Uta):
     
     async def create_poll(self, message):
         await self.try_answer(message, text=f"Push the button to create poll.\nThis poll will be posted in [our private chat]({LINK_WELCOME}).", parse_mode='Markdown', reply_markup=keyboard.k_poll)
+
+# __________________________cute_animal____________________________
+    async def cute_animal(self, message):
+            cute_animal = f"https://random.dog/woof.json"
+            data = urlopen(cute_animal).read()
+            d = json.loads(data)
+            link=d['url']        #here
+            smile = await bot.send_photo(message, f"Okay {self.first_name}, send me your value in  for convertation to .")
+            self.base_pair = message.text.upper()
+            self.route.update(obj=smile, process='/convert')
+            self.post()

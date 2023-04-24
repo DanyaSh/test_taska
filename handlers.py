@@ -63,7 +63,7 @@ async def instruction(call: types.CallbackQuery):
 @dp.callback_query_handler(lambda call: call.data=='/fun_animal')
 async def instruction(call: types.CallbackQuery):
     user=User(call)
-    await call.message.answer(text='@gif cute animal')
+    await user.cute_animal(call.message)
 
 @dp.callback_query_handler(lambda call: call.data=='/fun_poll')
 async def instruction(call: types.CallbackQuery):

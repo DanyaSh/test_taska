@@ -232,7 +232,7 @@ class User(Bm, Uta):
 
     def weather_answer(self, lat, lon):
         icon = {'01d':'☀️', '01n':'🌙', '02d':'🌤', '02n':'🌤', '03d':'🌥', '03n':'🌥', '04d':'☁️', '04n':'☁️', '09d':'🌧', '09n':'🌧', '10d':'🌦', '10n':'🌦', '11d':'⛈', '11n':'⛈', '13d':'❄️', '13n':'❄️', '50n':'🌫', '50d':'🌫'}
-        country = {'RU':'🇷🇺', 'US':'🇺🇸'}
+        country = {'RU':'🇷🇺', 'US':'🇺🇸', 'GB':'🇬🇧', 'UA':'🇺🇦', 'TR':'🇹🇷', 'SE':'🇸🇪', 'ES':'🇪🇸', 'KR':'🇰🇷', 'PE':'🇵🇪', 'IT':'🇮🇹', 'IL':'🇮🇱', 'DE':'🇩🇪', 'GE':'🇬🇪', 'FR':'🇫🇷', 'AR':'🇦🇷', 'BR':'🇧🇷', 'CN':'🇨🇳', 'CA':'🇨🇦'}
         weather_call = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={TOKEN_WEATHER}&units=metric"
         data = urlopen(weather_call).read()
         d = json.loads(data)
@@ -264,7 +264,7 @@ class User(Bm, Uta):
     
     def weather_city_id_answer(self, city_id):
         icon = {'01d':'☀️', '01n':'🌙', '02d':'🌤', '02n':'🌤', '03d':'🌥', '03n':'🌥', '04d':'☁️', '04n':'☁️', '09d':'🌧', '09n':'🌧', '10d':'🌦', '10n':'🌦', '11d':'⛈', '11n':'⛈', '13d':'❄️', '13n':'❄️', '50n':'🌫', '50d':'🌫'}
-        country = {'RU':'🇷🇺', 'US':'🇺🇸'}
+        country = {'RU':'🇷🇺', 'US':'🇺🇸', 'GB':'🇬🇧', 'UA':'🇺🇦', 'TR':'🇹🇷', 'SE':'🇸🇪', 'ES':'🇪🇸', 'KR':'🇰🇷', 'PE':'🇵🇪', 'IT':'🇮🇹', 'IL':'🇮🇱', 'DE':'🇩🇪', 'GE':'🇬🇪', 'FR':'🇫🇷', 'AR':'🇦🇷', 'BR':'🇧🇷', 'CN':'🇨🇳', 'CA':'🇨🇦'}
         weather_call = f"https://api.openweathermap.org/data/2.5/weather?id={city_id}&appid={TOKEN_WEATHER}&units=metric"
         data = urlopen(weather_call).read()
         d = json.loads(data)

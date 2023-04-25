@@ -1,10 +1,10 @@
 '''
 Примечания к версии:
-    🔵 Приветствовать пользователя, выбор функции бота
-    🔵 OpenWeatherMap
-    🔵 Exchange Rates API
-    🔵 Sweet animal
-    🔵 polls
+    ✅ Приветствовать пользователя, выбор функции бота
+    ✅ OpenWeatherMap
+    ✅ Exchange Rates API
+    ✅ Sweet animal
+    ✅ polls
     ------------------------------------------------------------------------------------------
     ✅
     🔴
@@ -22,7 +22,7 @@ from base_manager import Bm, Column, log_time
 from try_manager import User_try_aiogram as Uta
 from aiogram import Bot, Dispatcher, types
 import time
-from config import TOKEN, TOKEN_WEATHER, TOKEN_EXCHANGE, CAT, GROUP_ID, LINK_WELCOME
+# from config import TOKEN, TOKEN_WEATHER, TOKEN_EXCHANGE, CAT, GROUP_ID, LINK_WELCOME
 import sqlite3
 import subprocess
 from io import BytesIO
@@ -31,7 +31,19 @@ import asyncio
 import keyboard
 import json
 from urllib.request import urlopen
-# from handlers import bot
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+# __________________________________CONSTANTS____________________________________
+TOKEN           = os.getenv('TOKEN')
+TOKEN_WEATHER   = os.getenv('TOKEN_WEATHER')
+TOKEN_EXCHANGE  = os.getenv('TOKEN_EXCHANGE')
+CAT             = os.getenv('CAT')
+GROUP_ID        = os.getenv('GROUP_ID')
+LINK_WELCOME    = os.getenv('LINK_WELCOME')
+
 
 bot =   Bot(token=TOKEN, parse_mode=types.ParseMode.HTML)
 dp  =   Dispatcher(bot)

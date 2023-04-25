@@ -1,8 +1,15 @@
 from test_taska import User
-from config import TOKEN, GROUP_ID
+# from config import TOKEN, GROUP_ID
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
-import keyboard
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+# __________________________________CONSTANTS____________________________________
+TOKEN           = os.getenv('TOKEN')
+GROUP_ID        = os.getenv('GROUP_ID')
 
 # __________________________________GLOBAL VARIABLES____________________________________
 

@@ -30,43 +30,6 @@ b_home = types.InlineKeyboardButton(text='💱change pair', callback_data='/chan
 b_change = types.InlineKeyboardButton(text='🏠Home', callback_data='/start')
 k_answer_exchange.add(b_change, b_home)
 
-k_start_friendly = types.InlineKeyboardMarkup()
-b1 = types.InlineKeyboardButton(text='🔑 Получить файл-доступ', callback_data='/get_config')
-b2 = types.InlineKeyboardButton(text='🤝 Пригласить друга', callback_data='/get_link')
-b3_man = types.InlineKeyboardButton(text='📖 Инструкция', callback_data='/instruction')
-b4_beer = types.InlineKeyboardButton(text='🍺 На пиво!', callback_data='/beer')
-k_start_friendly.add(b1, b2)
-k_start_friendly.add(b3_man, b4_beer)
-
-k_only_man = types.InlineKeyboardMarkup()
-k_only_man.add(b3_man)
-
-k_start_admin = types.InlineKeyboardMarkup()
-b4 = types.InlineKeyboardButton(text='👑 Управление🔐', callback_data='/manage')
-b5 = types.InlineKeyboardButton(text='❔ question🔐', callback_data='/question')
-b6 = types.InlineKeyboardButton(text='❕ answer🔐', callback_data='/answer')
-k_start_admin.add(b1, b2)
-k_start_admin.add(b3_man)
-k_start_admin.add(b4)
-k_start_admin.add(b5, b6)
-
-k_manage_user = types.InlineKeyboardMarkup()
-b1 = types.InlineKeyboardButton(text='〽️ Изменить rang🔐', callback_data='/change_rang')
-b2 = types.InlineKeyboardButton(text='🚷 Деактивировать🔐', callback_data='/deactivate')
-k_manage_user.add(b1, b2)
-k_manage_user.add(b_cancel)
-
-k_manage_user_unban = types.InlineKeyboardMarkup()
-b3 = types.InlineKeyboardButton(text='♻️ Разбанить🔐', callback_data='/unban')
-k_manage_user_unban.add(b1, b2)
-k_manage_user_unban.add(b3)
-
-k_choice_device = types.InlineKeyboardMarkup()
-b1 = types.InlineKeyboardButton(text='🍏 Apple', callback_data='/help_apple')
-b2 = types.InlineKeyboardButton(text='🤖 Android', callback_data='/help_android')
-k_choice_device.add(b1, b2)
-k_choice_device.add(b_cancel)
-
 # ______________________________________KEYBOARDS________________________________________
 k_location = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 b1 = types.KeyboardButton(text='📍 Отправить локацию телефона', request_location=True)

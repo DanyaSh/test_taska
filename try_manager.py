@@ -1,6 +1,13 @@
 import time
-from config import TOKEN
+# from config import TOKEN
 from aiogram import Bot, Dispatcher, types
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
+# __________________________________CONSTANTS____________________________________
+TOKEN = os.getenv('TOKEN')
 
 bot = Bot(token=TOKEN, parse_mode=types.ParseMode.HTML) 
 

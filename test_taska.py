@@ -242,15 +242,27 @@ class User(Bm, Uta):
 
     async def weather_of_city(self, message):
         city_name = message.text
-        f = open('city_list.json', "r", encoding='utf-8')
-        dict_data = eval(f.read())
-        f.close()
-        dict_city= {}
-        for x in dict_data:
+        # f = open('city_list.json', "r", encoding='utf-8')
+        # dict_data = eval(f.read())
+        # f.close()
+        # dict_city= {}
+        # for x in dict_data:
+        #     dict_city[x["name"]]=x['id']
+        # list_result=[]
+        # for x in dict_city.keys():
+        #     if city_name.lower() in x.lower(): list_result.append(x)
+
+        with open("city_list.json", "r", encoding='utf-8') as f:
+            data = json.load(f)
+
+        dict_city = {}
+        for x in data:
             dict_city[x["name"]]=x['id']
+        
         list_result=[]
         for x in dict_city.keys():
             if city_name.lower() in x.lower(): list_result.append(x)
+
         k_cities = types.InlineKeyboardMarkup()
         for x in list_result:
             k_cities.add(types.InlineKeyboardButton(text=x, callback_data='/city_id_'+str(dict_city[x])))

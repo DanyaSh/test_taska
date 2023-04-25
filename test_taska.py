@@ -312,7 +312,8 @@ class User(Bm, Uta):
             data = urlopen(cute_animal).read()
             d = json.loads(data)
             link=d['url']        #here
-            smile = await bot.send_photo(message, f"Okay {self.first_name}, send me your value in  for convertation to .")
-            self.base_pair = message.text.upper()
-            self.route.update(obj=smile, process='/convert')
-            self.post()
+            smile = await bot.send_photo(message.chat.id, photo=link, reply_markup=keyboard.k_help_friendly)
+            # smile = await bot.send_photo(message, f"Okay {self.first_name}, send me your value in  for convertation to .")
+            # self.base_pair = message.text.upper()
+            # self.route.update(obj=smile, process='/convert')
+            # self.post()

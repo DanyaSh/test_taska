@@ -1,0 +1,6 @@
+/venv/*
+/config.py
+/base.sqlite
+/.vscode/*
+/.env
+*.log

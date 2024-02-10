@@ -1,6 +1,4 @@
-/venv/*
-/config.py
-/base.sqlite
-/.vscode/*
-/.env
-*.log
+.vscode/
+/test_taska/base.sqlite
+.env*
+*.log*

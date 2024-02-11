@@ -18,9 +18,9 @@ Legend--------------------------------------------------------------------------
     ⚫️
     ⚪️
 '''
-about='taska_v0.2.4'
-branch='main'
-code='test_for_hh.ru'
+about='taska_v1.0.0'
+branch='draft'
+code='new_architecture'
 
 from multiprocessing.connection import answer_challenge
 from requests import delete

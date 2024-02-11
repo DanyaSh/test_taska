@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "test-taska"
-version = "1.0.0"
+version = "1.0.2"
 description = ""
 authors = ["DanyaSh <danilashundeev@gmail.com>"]
 license = "MIT"
@@ -8,8 +8,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiogram = "2.25.1"
 python-dotenv = "^1.0.1"
+aiogram = "^3.3.0"
 
 
 [build-system]

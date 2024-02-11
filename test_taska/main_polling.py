@@ -8,10 +8,10 @@ import asyncio
 from aiogram import Bot, Dispatcher, types
 import os
 from dotenv import load_dotenv
-from bot.handlers.user_handlers import register_user_handlers
+from bot.handlers import user_handlers
 
-def register_handler(dp: Dispatcher) -> None:
-    register_user_handlers(dp)
+#def register_handler(dp: Dispatcher) -> None:
+#    register_user_handlers(dp)
 
 async def main() -> None:
     """Entry point
@@ -19,13 +19,13 @@ async def main() -> None:
     load_dotenv('.env')
     
     token=os.getenv('TOKEN_BOT')
-    bot=Bot(token=token, parse_mode=types.ParseMode.HTML)
-    dp=Dispatcher(bot)
-
-    register_handler(dp)
+    bot=Bot(token=token, parse_mode="HTML")
+    dp=Dispatcher()
+    dp.include_routers(user_handlers.router)
+    await bot.delete_webhook(drop_pending_updates=True)
 
     try:
-        await dp.start_polling()
+        await dp.start_polling(bot)
     except Exception as _ex:
         print(f"🔴Error -> {_ex}")
 

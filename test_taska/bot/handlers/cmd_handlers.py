@@ -24,15 +24,23 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from bot.keyboards.user_keyboards import get_start_ikb
+import bot.keyboards.user_keyboards as ikb
+import bot.texts.user_texts as txt
 
-router = Router()  # [1]
+router = Router()
 
-@router.message(Command("start"))  # [2]
+@router.message(Command("start"))
 async def cmd_start(msg: Message):
-    reply_text = f"👋 Hi {msg.from_user.first_name}!\n"
-    reply_text += f"What do you want❓"
+    reply_text=txt.start.format(name=msg.from_user.first_name)
     await msg.answer(
         text=reply_text,
-        reply_markup=get_start_ikb()
+        reply_markup=ikb.get_start_ikb()
+    )
+
+@router.message(Command("help"))
+async def cmd_help(msg: Message):
+    reply_text=txt.help
+    await msg.answer(
+        text=reply_text,
+        reply_markup=ikb.get_home_ikb()
     )

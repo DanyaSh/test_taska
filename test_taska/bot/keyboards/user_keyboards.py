@@ -17,6 +17,17 @@ def get_start_ikb() -> InlineKeyboardMarkup:
     ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
     return ikb
 
+def get_home_ikb() -> InlineKeyboardMarkup:
+    """Get ikb for home
+    """
+    b_home   = InlineKeyboardButton(text='🏠 Home', callback_data='/start')
+
+    line1=[b_home]
+    buttons=[line1]
+
+    ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
+    return ikb
+
 def get_main_kb() -> ReplyKeyboardMarkup:
     kb = ReplyKeyboardBuilder()
     kb.button(text="Да")

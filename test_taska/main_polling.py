@@ -8,7 +8,7 @@ import asyncio
 from aiogram import Bot, Dispatcher, types
 import os
 from dotenv import load_dotenv
-from bot.handlers import user_handlers
+from bot.handlers import cmd_handlers, ib_handlers, dif_handlers
 
 #def register_handler(dp: Dispatcher) -> None:
 #    register_user_handlers(dp)
@@ -21,7 +21,7 @@ async def main() -> None:
     token=os.getenv('TOKEN_BOT')
     bot=Bot(token=token, parse_mode="HTML")
     dp=Dispatcher()
-    dp.include_routers(user_handlers.router)
+    dp.include_routers(cmd_handlers.router, ib_handlers.router, dif_handlers.router)
     await bot.delete_webhook(drop_pending_updates=True)
 
     try:

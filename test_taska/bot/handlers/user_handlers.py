@@ -24,7 +24,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from bot.keyboards.user_keyboards import get_main_kb
+from bot.keyboards.user_keyboards import get_main_kb, get_start_ikb, main_menu
 
 router = Router()  # [1]
 
@@ -34,7 +34,7 @@ async def cmd_start(message: Message):
     reply_text += f"Твое имя - {message.from_user.first_name}!"
     await message.answer(
         text=reply_text,
-        reply_markup=get_main_kb()
+        reply_markup=get_start_ikb()
     )
 
 #@router.message(F.text.lower() == "да")

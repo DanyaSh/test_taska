@@ -24,29 +24,15 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from bot.keyboards.user_keyboards import get_main_kb, get_start_ikb, main_menu
+from bot.keyboards.user_keyboards import get_start_ikb
 
 router = Router()  # [1]
 
 @router.message(Command("start"))  # [2]
-async def cmd_start(message: Message):
-    reply_text = f"Привет, как твои дела?\n"
-    reply_text += f"Твое имя - {message.from_user.first_name}!"
-    await message.answer(
+async def cmd_start(msg: Message):
+    reply_text = f"👋 Hi {msg.from_user.first_name}!\n"
+    reply_text += f"What do you want❓"
+    await msg.answer(
         text=reply_text,
         reply_markup=get_start_ikb()
     )
-
-#@router.message(F.text.lower() == "да")
-#async def answer_yes(message: Message):
-#    await message.answer(
-#        "Это здорово!",
-#        reply_markup=ReplyKeyboardRemove()
-#    )
-#
-#@router.message(F.text.lower() == "нет")
-#async def answer_no(message: Message):
-#    await message.answer(
-#        "Жаль...",
-#        reply_markup=ReplyKeyboardRemove()
-#    )

@@ -14,3 +14,11 @@ async def cmd_start(msg: Message):
         text=reply_text,
         reply_markup=ikb.get_start_ikb()
     )
+
+@router.message(Command("help"))
+async def cmd_help(msg: Message):
+    reply_text=txt.help
+    await msg.answer(
+        text=reply_text,
+        reply_markup=ikb.get_home_ikb()
+    )

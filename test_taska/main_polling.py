@@ -6,6 +6,7 @@
 
 import asyncio
 from aiogram import Bot, Dispatcher, types
+from aiogram.utils.chat_action import ChatActionMiddleware
 import os
 from dotenv import load_dotenv
 from bot.handlers import cmd_handlers, ib_handlers, dif_handlers
@@ -22,6 +23,7 @@ async def main() -> None:
     bot=Bot(token=token, parse_mode="HTML")
     dp=Dispatcher()
     dp.include_routers(cmd_handlers.router, ib_handlers.router, dif_handlers.router)
+    dp.message.middleware(ChatActionMiddleware()) # for flags typing, upload photo...
     await bot.delete_webhook(drop_pending_updates=True)
 
     try:

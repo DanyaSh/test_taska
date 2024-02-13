@@ -1,6 +1,4 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.types import ReplyKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 def get_start_ikb() -> InlineKeyboardMarkup:
     """Get ikb for main menu
@@ -27,10 +25,3 @@ def get_home_ikb() -> InlineKeyboardMarkup:
 
     ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
     return ikb
-
-def get_main_kb() -> ReplyKeyboardMarkup:
-    kb = ReplyKeyboardBuilder()
-    kb.button(text="Да")
-    kb.button(text="Нет")
-    kb.adjust(2)
-    return kb.as_markup(resize_keyboard=True)

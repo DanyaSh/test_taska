@@ -8,7 +8,7 @@ import asyncio
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils.chat_action import ChatActionMiddleware
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from bot.handlers import cmd_handlers, ib_handlers, dif_handlers
 
 #def register_handler(dp: Dispatcher) -> None:
@@ -17,7 +17,7 @@ from bot.handlers import cmd_handlers, ib_handlers, dif_handlers
 async def main() -> None:
     """Entry point
     """
-    load_dotenv('.env')
+    load_dotenv(find_dotenv())
     
     token=os.getenv('TOKEN_BOT')
     bot=Bot(token=token, parse_mode="HTML")

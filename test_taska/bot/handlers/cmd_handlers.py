@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
-import bot.keyboards.user_keyboards as ikb
+import bot.keyboards.ikb_keyboards as ikb
 import bot.texts.user_texts as txt
 
 router = Router()
@@ -17,7 +17,7 @@ async def cmd_start(msg: Message):
 
 @router.message(Command("help"))
 async def cmd_help(msg: Message):
-    reply_text=txt.help
+    reply_text=txt.helps
     await msg.answer(
         text=reply_text,
         reply_markup=ikb.get_home_ikb()

@@ -1,4 +1,4 @@
 from aiogram.fsm.state import StatesGroup, State
 
 class Gen(StatesGroup):
-    img_prompt = State()
+    city_prompt = State()

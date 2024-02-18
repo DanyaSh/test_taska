@@ -79,4 +79,4 @@ async def exchange_buttons(clbck: CallbackQuery, state: FSMContext):
 
 @router.callback_query(F.data== "/fun_poll")
 async def fun_poll(clbck: CallbackQuery):
-    await clbck.answer(text='📝 move to Aiogram3', show_alert=True)
+    await clbck.answer(text='📝', show_alert=False)

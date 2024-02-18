@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from bot.utils.states import Gen
-import bot.utils.api_utils as utl
+import bot.utils.weather as weather_api
 import bot.keyboards.ikb_keyboards as ikb
 import bot.texts.user_texts as txt
 
@@ -20,9 +20,9 @@ async def message_with_gif(msg: Message):
 async def answer_weather(msg: Message, state: FSMContext):
     lat = msg.location.latitude
     lon = msg.location.longitude
-    reply_text = await utl.get_weather_via_location(lat=lat, lon=lon)
+    reply_text = await weather_api.get_weather_via_location(lat=lat, lon=lon)
     await state.clear()
-    await msg.answer(text=reply_text)
+    await msg.answer(text=reply_text, reply_markup=ikb.get_home_ikb())
 
 @router.message(Gen.city_prompt, F.text)
 async def answer_weather(msg: Message, state: FSMContext):

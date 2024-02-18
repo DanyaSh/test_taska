@@ -1,13 +1,12 @@
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
-from aiogram import flags
+from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
-
 from bot.utils.states import Gen
 import bot.keyboards.ikb_keyboards as ikb 
 import bot.keyboards.kb_keyboards as kb 
 import bot.texts.user_texts as txt
-import bot.utils.api_utils as utl
+import bot.utils.weather as weather_api
+import bot.utils.animal as dog_api
 
 router = Router()
 
@@ -35,7 +34,7 @@ async def fun_city_id(clbck: CallbackQuery, state: FSMContext):
     await clbck.answer(text='⏳', show_alert=False)
     await state.clear()
     city_id=clbck.data[9:]
-    reply_text = await utl.get_weather_via_city(city_id)
+    reply_text = await weather_api.get_weather_via_city(city_id)
     await clbck.message.answer(
         text=reply_text,
         reply_markup=ikb.get_home_ikb()
@@ -44,7 +43,7 @@ async def fun_city_id(clbck: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data== "/fun_animal")
 async def fun_animal(clbck: CallbackQuery):
     await clbck.answer(text='🐱', show_alert=False)
-    link = await utl.generate_image()
+    link = await dog_api.generate_image()
     await clbck.message.answer_photo(
         photo=link, 
         reply_markup=ikb.get_home_ikb()

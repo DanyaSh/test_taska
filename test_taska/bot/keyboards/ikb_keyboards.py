@@ -69,3 +69,35 @@ def get_cities_ikb(text) -> InlineKeyboardMarkup:
         buttons.append([b_city])
     ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
     return(ikb)
+
+def get_exchange_ikb() -> InlineKeyboardMarkup:
+    """Get ikb for exchange
+    """
+    b_usd_rub = InlineKeyboardButton(
+        text='🇺🇸USD 🔜 🇷🇺RUB',
+        callback_data='/usd_rub'
+    )
+
+    b_rub_usd = InlineKeyboardButton(
+        text='🇷🇺RUB 🔜 🇺🇸USD',
+        callback_data='/rub_usd'
+    )
+
+    b_eur_rub = InlineKeyboardButton(
+        text='🇪🇺EUR 🔜 🇷🇺RUB',
+        callback_data='/eur_rub'
+    )
+
+    b_rub_eur = InlineKeyboardButton(
+        text='🇷🇺RUB 🔜 🇪🇺EUR',
+        callback_data='/rub_eur'
+    )
+    
+    line1=[b_usd_rub, b_rub_usd]
+    line2=[b_eur_rub, b_rub_eur]
+    buttons=[line1, line2]
+
+    ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
+    return ikb
+    
+        

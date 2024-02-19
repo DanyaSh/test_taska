@@ -17,6 +17,11 @@ exchange_input += "for conversion to {second}"
 
 exchange_output = "Now {value} {first} = {answer} {second}."
 
+poll  = "Push the button to create poll.\n"
+poll += "This poll will be posted in [our private chat]({link})."
+
+cancel = '💤 Действие отменено'
+
 sticker = 'This is a sticker!'
 
 animation = 'This is a GIF!'

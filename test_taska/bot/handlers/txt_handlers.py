@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from bot.utils.states import Weather, Exchange
+from bot.utils.states import Weather, Exchange, Poll
 import bot.utils.exchange as exchange_api
 import bot.keyboards.ikb_keyboards as ikb
 import bot.texts.user_texts as txt
@@ -48,6 +48,11 @@ async def answer_exchange(msg: Message, state: FSMContext):
         answer = round(value*rates, 2)
     )
     await msg.answer(text=reply_text, reply_markup=ikb.get_home_ikb())
+
+@router.message(Poll.cancel_prompt, F.text=="❌Cancel")
+async def message_cancel(msg: Message, state: FSMContext):
+    await state.clear()
+    await msg.answer(text=txt.cancel, reply_markup=ikb.get_home_ikb())
 
 @router.message(F.text)
 async def message_with_text(msg: Message):

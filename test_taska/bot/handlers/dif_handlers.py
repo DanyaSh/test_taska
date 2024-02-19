@@ -1,21 +1,29 @@
-from aiogram import Router, F
+from aiogram import Bot, Router, F
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from bot.utils.states import Weather, Exchange
+from bot.utils.states import Weather
 import bot.utils.weather as weather_api
-import bot.utils.exchange as exchange_api
 import bot.keyboards.ikb_keyboards as ikb
 import bot.texts.user_texts as txt
+
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+group_id = os.getenv('GROUP_ID')
+token=os.getenv('TOKEN_BOT')
+
+bot=Bot(token=token, parse_mode="HTML")
 
 router = Router()
 
 @router.message(F.sticker)
 async def message_with_sticker(msg: Message):
-    await msg.answer("Это стикер!")
+    await msg.answer(text=txt.sticker)
 
 @router.message(F.animation)
 async def message_with_gif(msg: Message):
-    await msg.answer("Это GIF!")
+    await msg.answer(txt.animation)
 
 @router.message(Weather.city_prompt, F.location)
 async def answer_weather_location(msg: Message, state: FSMContext):
@@ -25,47 +33,19 @@ async def answer_weather_location(msg: Message, state: FSMContext):
     await state.clear()
     await msg.answer(text=reply_text, reply_markup=ikb.get_home_ikb())
 
-@router.message(Weather.city_prompt, F.text)
-async def answer_weather_city(msg: Message, state: FSMContext):
-    reply_ikb = ikb.get_cities_ikb(text=msg.text)
-    reply_text=txt.choice_city.format(text=msg.text)
-    await msg.answer(text=reply_text, reply_markup=reply_ikb)
-
-@router.message(Exchange.first_prompt, F.text)
-async def exchange_input(msg: Message, state: FSMContext):
-    first_prompt=msg.text[:3].upper()
-    second_prompt=msg.text[4:].upper()
-    await state.update_data(
-        first_prompt = first_prompt,
-        second_prompt = second_prompt
-    )
-    await state.set_state(Exchange.value_prompt)
-    reply_text=txt.exchange_input.format(
-        name=msg.from_user.first_name,
-        first=first_prompt,
-        second=second_prompt
-    )
-    await msg.answer(text=reply_text)
-
-@router.message(Exchange.value_prompt, F.text)
-async def answer_exchange(msg: Message, state: FSMContext):
-    data = await state.get_data()
-    await state.clear()
-    first = data['first_prompt']
-    second = data['second_prompt']
-    value = float(''.join(msg.text.split(" ")))
-    rates = await exchange_api.get_rate(
-        first = first,
-        second = second
-    )
-    reply_text = txt.exchange_output.format(
-        first  = first,
-        second = second,
-        value  = value,
-        answer = value * rates
-    )
-    await msg.answer(text=reply_text, reply_markup=ikb.get_home_ikb())
-
-@router.message(F.text)
-async def message_with_text(msg: Message):
-    await msg.answer("Это текстовое сообщение!")
+@router.message(F.poll)
+async def forward_poll(msg: Message):
+    p=msg.poll
+    await bot.send_poll(
+        chat_id=group_id,
+        question=p.question, 
+        options=[x.text for x in p.options], 
+        is_anonymous=p.is_anonymous, 
+        type=p.type, 
+        allows_multiple_answers=p.allows_multiple_answers, 
+        correct_option_id=p.correct_option_id, 
+        explanation=p.explanation, 
+        explanation_entities=p.explanation_entities, 
+        open_period=p.open_period, 
+        close_date=p.close_date
+    ) 

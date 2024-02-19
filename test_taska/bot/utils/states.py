@@ -7,3 +7,6 @@ class Exchange(StatesGroup):
 
 class Weather(StatesGroup):
     city_prompt = State()
+
+class Poll(StatesGroup):
+    cancel_prompt = State()

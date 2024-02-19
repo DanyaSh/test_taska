@@ -1,13 +1,20 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
-from bot.utils.states import Weather, Exchange
+
+from bot.utils.states import Weather, Exchange, Poll
 import bot.keyboards.ikb_keyboards as ikb 
 import bot.keyboards.kb_keyboards as kb 
 import bot.texts.user_texts as txt
 import bot.utils.weather as weather_api
 import bot.utils.exchange as exchange_api
 import bot.utils.animal as dog_api
+
+import os
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+invite_link = os.getenv('LINK_WELCOME')
 
 router = Router()
 
@@ -78,5 +85,11 @@ async def exchange_buttons(clbck: CallbackQuery, state: FSMContext):
     await clbck.message.answer(text=reply_text)
 
 @router.callback_query(F.data== "/fun_poll")
-async def fun_poll(clbck: CallbackQuery):
-    await clbck.answer(text='📝 move to Aiogram3', show_alert=True)
+async def fun_poll(clbck: CallbackQuery, state: FSMContext):
+    await clbck.answer(text='📝', show_alert=False)
+    await state.set_state(Poll.cancel_prompt)
+    await clbck.message.answer(
+        text=txt.poll.format(link=invite_link),
+        reply_markup=kb.get_poll_kb(),
+        parse_mode="Markdown"
+    )

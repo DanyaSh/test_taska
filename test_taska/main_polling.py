@@ -19,8 +19,8 @@ async def main() -> None:
     """
     load_dotenv(find_dotenv())
     
-    token=os.getenv('TOKEN_BOT')
-    bot=Bot(token=token, parse_mode="HTML")
+    token_bot=os.getenv('TOKEN_BOT')
+    bot=Bot(token=token_bot, parse_mode="HTML")
     dp=Dispatcher()
     dp.include_routers(
         cmd_handlers.router,

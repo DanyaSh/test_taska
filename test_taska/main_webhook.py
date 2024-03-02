@@ -1,18 +1,13 @@
 import logging
 import sys
-
 from aiohttp import web
-from aiogram import Bot, Dispatcher
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
-
-from bot.handlers import cmd_handlers, ib_handlers, txt_handlers, dif_handlers
-
+from pre_main import dp, bot, startup_fun, shutdown_fun
 from os import getenv
 from dotenv import load_dotenv, find_dotenv
 
 
 load_dotenv(find_dotenv())
-TOKEN_BOT        = getenv('TOKEN_BOT')
 WEBHOOK_SECRET   = getenv('WEBHOOK_SECRET')
 WEBHOOK_PATH     = getenv('WEBHOOK_PATH')
 WEB_SERVER_HOST  = getenv('WEB_SERVER_HOST')
@@ -22,18 +17,14 @@ BASE_WEBHOOK_URL = getenv("BASE_WEBHOOK_URL")
 
 async def on_startup(bot: Bot) -> None:
     await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
+    await startup_fun()
 
+async def on_shutdown(bot: Bot) -> None:
+    await shutdown_fun()
 
 def main() -> None:
-    dp = Dispatcher()
-    dp.include_router(
-        cmd_handlers,
-        ib_handlers,
-        txt_handlers,
-        dif_handlers
-    )
     dp.startup.register(on_startup)
-    bot = Bot(TOKEN_BOT, parse_mode='HTML')
+    dp.shutdown.register(on_shutdown)
     app = web.Application()
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,

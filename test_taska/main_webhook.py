@@ -15,11 +15,11 @@ WEB_SERVER_PORT  = int(getenv('WEB_SERVER_PORT'))
 BASE_WEBHOOK_URL = getenv("BASE_WEBHOOK_URL")
 
 
-async def on_startup(bot: Bot) -> None:
+async def on_startup(bot: bot) -> None:
     await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
     await startup_fun()
 
-async def on_shutdown(bot: Bot) -> None:
+async def on_shutdown(bot: bot) -> None:
     await shutdown_fun()
 
 def main() -> None:

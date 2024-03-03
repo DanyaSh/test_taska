@@ -21,4 +21,5 @@ RUN poetry install --no-dev
 COPY . /app
 
 # Define the command to run the application
-CMD ["poetry", "run", "python", "test_taska/main_polling.py"]
+#CMD ["poetry", "run", "python", "test_taska/main_polling.py"]
+CMD ["poetry", "run", "python", "test_taska/main_webhook.py"]

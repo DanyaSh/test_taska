@@ -1,0 +1,18 @@
+  test_taska:
+    container_name: tt-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: test_taska:latest
+
+  nginx:
+    container_name: tt-nginx
+    image: nginx_tt:latest
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/vm3504194.24ssd.had.wf:/etc/letsencrypt/live/vm3504194.24ssd.had.wf
+    build:
+      context: ./nginx
+      # args:
+        # PROXY_PASS: http://test_taska:9191   

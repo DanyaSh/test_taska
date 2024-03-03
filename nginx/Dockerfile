@@ -1,17 +1,23 @@
 FROM nginx:latest
 
-# Удалите стандартную конфигурацию Nginx
+# Удаляем стандартный конфигурационный файл nginx
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Копируем шаблон конфигурационного файла Nginx
-COPY server.conf_tpl /etc/nginx/conf.d/server.conf
+# Копируем шаблон конфигурационного файла и entrypoint скрипт
+COPY server.conf_tpl /etc/nginx/conf.d/server.conf_tpl
+COPY entrypoint.sh /entrypoint.sh
+
+# Делаем entrypoint скрипт исполняемым
+RUN chmod +x /entrypoint.sh
 
 # Указываем порты, на которых будет работать Nginx и SSL
 EXPOSE 443
-EXPOSE 9191
 
-# Указание рабочей директории
+# Устанавливаем рабочую директорию
 WORKDIR /etc/nginx
 
-# Запускаем команду для запуска Nginx
+# Устанавливаем entrypoint скрипт
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Запускаем Nginx в foreground режиме
 CMD ["nginx", "-g", "daemon off;"]

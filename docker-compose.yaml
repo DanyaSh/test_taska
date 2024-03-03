@@ -18,5 +18,5 @@ services:
         - /etc/letsencrypt:/etc/letsencrypt:ro
     build:
       context: ./nginx
-      # args:
-        # PROXY_PASS: http://test_taska:9191   
+    env_file:
+        - .env

@@ -5,15 +5,14 @@ from bot.utils.states import Weather
 import bot.utils.weather as weather_api
 import bot.keyboards.ikb_keyboards as ikb
 import bot.texts.user_texts as txt
-
 import os
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
-group_id = os.getenv('GROUP_ID')
-token=os.getenv('TOKEN_BOT')
+GROUP_ID = os.getenv('GROUP_ID')
+TOKEN_BOT=os.getenv('TOKEN_BOT')
 
-bot=Bot(token=token, parse_mode="HTML")
+bot=Bot(token=TOKEN_BOT, parse_mode="HTML")
 
 router = Router()
 
@@ -37,7 +36,7 @@ async def answer_weather_location(msg: Message, state: FSMContext):
 async def forward_poll(msg: Message):
     p=msg.poll
     await bot.send_poll(
-        chat_id=group_id,
+        chat_id=GROUP_ID,
         question=p.question, 
         options=[x.text for x in p.options], 
         is_anonymous=p.is_anonymous, 

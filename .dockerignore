@@ -1,0 +1,14 @@
+__pycache__
+**/*.pyc
+.vscode/
+
+.env*
+*.log*
+
+/test_taska/base.sqlite
+
+tests
+LICENSE
+README.md
+test_taska_control.sh
+nginx

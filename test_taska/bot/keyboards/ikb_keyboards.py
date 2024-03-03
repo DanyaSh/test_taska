@@ -1,10 +1,6 @@
 import json
 import os
-from dotenv import load_dotenv, find_dotenv
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-
-load_dotenv(find_dotenv())
-work_dir=os.getenv('CAT')
 
 def get_start_ikb() -> InlineKeyboardMarkup:
     """Get ikb for main menu
@@ -50,7 +46,7 @@ def get_home_ikb() -> InlineKeyboardMarkup:
 def get_cities_ikb(text) -> InlineKeyboardMarkup:
     """Get ikb for list of cities
     """
-    with open(f"{work_dir}test_taska/bot/data/city_list.json", "r", encoding='utf-8') as f:
+    with open(f"./test_taska/bot/data/city_list.json", "r", encoding='utf-8') as f:
         data = json.load(f)
     
     dict_city = {}
@@ -99,5 +95,3 @@ def get_exchange_ikb() -> InlineKeyboardMarkup:
 
     ikb = InlineKeyboardMarkup(inline_keyboard=buttons)
     return ikb
-    
-        

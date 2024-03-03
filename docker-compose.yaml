@@ -1,0 +1,22 @@
+version: '3'
+services:
+  test_taska:
+    container_name: tt-bot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: test_taska:latest
+    env_file:
+        - .env
+
+  nginx:
+    container_name: tt-nginx
+    image: nginx_tt:latest
+    ports:
+      - "443:443"
+    volumes:
+        - /etc/letsencrypt:/etc/letsencrypt:ro
+    build:
+      context: ./nginx
+    env_file:
+        - .env

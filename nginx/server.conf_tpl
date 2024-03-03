@@ -1,0 +1,16 @@
+server {
+ 
+     listen 443 ssl;
+     server_name ${DOMEN};
+     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+     ssl_certificate ${SSL_CERT};
+     ssl_certificate_key ${SSL_KEY};
+     
+     location ${WEBHOOK_PATH} {
+         proxy_set_header Host $http_host;
+         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_redirect off;
+         proxy_buffering off;
+         proxy_pass ${PROXY_PASS};
+     }
+ }

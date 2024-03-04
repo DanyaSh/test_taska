@@ -8,7 +8,7 @@ We are excited to inform you that this project has now been moved to GitLab to l
 
 ---
 
-# 🏋️‍♀️ Test Taska
+# 🥎 Test Taska
 This is a bot for demonstrating hard skills in developing Telegram bots.
 
 *📌 You can also use this bot as a template for your projects.*
